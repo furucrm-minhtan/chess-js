@@ -1,0 +1,7 @@
+{
+    "insertPragma": true,
+    "semi": true,
+    "singleQuote": true,
+    "requirePragma": true,
+    "arrowParens": "always"
+}
