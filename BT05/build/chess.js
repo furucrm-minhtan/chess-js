@@ -2,38 +2,46 @@
 let table;
 let count = 1;
 const initChess = {
-    1: 'blackrookon',
-    2: 'blackknighton',
-    3: 'blackbishopon',
-    4: 'blackqueenon',
-    5: 'blackkingon',
-    6: 'blackbishopon',
-    7: 'blackknighton',
-    8: 'blackrookon',
-    9: 'blackpawnon',
-    10: 'blackpawnon',
-    11: 'blackpawnon',
-    12: 'blackpawnon',
-    13: 'blackpawnon',
-    14: 'blackpawnon',
-    15: 'blackpawnon',
-    16: 'blackpawnon',
-    49: 'whitepawnon',
-    50: 'whitepawnon',
-    51: 'whitepawnon',
-    52: 'whitepawnon',
-    53: 'whitepawnon',
-    54: 'whitepawnon',
-    55: 'whitepawnon',
-    56: 'whitepawnon',
-    57: 'whiterookon',
-    58: 'whiteknighton',
-    59: 'whitebishopon',
-    60: 'whitequeenon',
-    61: 'whitekingon',
-    62: 'whitebishopon',
-    63: 'whiteknighton',
-    64: 'whiterookon'
+    0: {
+        0: 'blackrookon',
+        1: 'blackknighton',
+        2: 'blackbishopon',
+        3: 'blackqueenon',
+        4: 'blackkingon',
+        5: 'blackbishopon',
+        6: 'blackknighton',
+        7: 'blackrookon'
+    },
+    1: {
+        0: 'blackpawnon',
+        1: 'blackpawnon',
+        2: 'blackpawnon',
+        3: 'blackpawnon',
+        4: 'blackpawnon',
+        5: 'blackpawnon',
+        6: 'blackpawnon',
+        7: 'blackpawnon'
+    },
+    6: {
+        0: 'whitepawnon',
+        1: 'whitepawnon',
+        2: 'whitepawnon',
+        3: 'whitepawnon',
+        4: 'whitepawnon',
+        5: 'whitepawnon',
+        6: 'whitepawnon',
+        7: 'whitepawnon'
+    },
+    7: {
+        0: 'whiterookon',
+        1: 'whiteknighton',
+        2: 'whitebishopon',
+        3: 'whitequeenon',
+        4: 'whitekingon',
+        5: 'whitebishopon',
+        6: 'whiteknighton',
+        7: 'whiterookon'
+    }
 };
 var typeMoveChess;
 (function (typeMoveChess) {
@@ -45,10 +53,10 @@ var typeMoveChess;
 const showMoveOnBoard = (type, { row, col, chess }) => {
     table.forEach((rowTable, index) => {
         rowTable.forEach((colTable, colIndex) => {
-            const element = document.querySelector(`img[data-row="${index}"][data-col="${colTable.index}"]`);
+            const element = document.querySelector(`img[data-row="${index}"][data-col="${colIndex}"]`);
             if (index == 1 && +colTable.index == 12)
                 console.log(checkMove(chess, +index, colTable.index, +row, +col));
-            if (element.parentElement && checkMove(chess, +index, colTable.index, +row, +col) && table[index][colIndex].curChess.name == 'square') {
+            if (element.parentElement && checkMove(chess, index, colIndex, +row, +col) && table[index][colIndex].curChess.name == 'square') {
                 type === 'add' ? element.parentElement.classList.add('highlight') : element.parentElement.classList.remove('highlight');
             }
         });
@@ -57,68 +65,64 @@ const showMoveOnBoard = (type, { row, col, chess }) => {
 const getColChessBoard = (index) => {
     return (+index % 8 || 8) - 1;
 };
-const attackRival = ({ chess: newChess, row: newRow, col: newCol }, { chess: oldChess, row: oldRow, col: oldCol }) => {
+const attackRival = ({ chess: newChess, row: newRow, col: newCol }, { chess: oldChess, row: oldRow, col: oldCol }, resultCheckMove) => {
     const chessTeam = getChessTeam(oldChess);
     const countRow = newRow - oldRow;
-    const countCol = Math.abs(getColChessBoard(newCol) - getColChessBoard(oldCol));
+    const countCol = Math.abs(newCol - oldCol);
     const stop = 'prevent';
+    console.log(newChess.includes(chessTeam));
     if (newChess.includes(chessTeam))
-        return stop;
+        resultCheckMove = false;
     else if (newChess != 'square') {
-        if (oldChess.substring(5) == 'pawnon' && !(countRow == 1 && countCol == 1))
-            return stop;
+        if (oldChess.substring(5) == 'pawnon' && (countRow == 1 && countCol == 1))
+            resultCheckMove = true;
     }
-    return 'square';
+    return resultCheckMove ? 'square' : stop;
 };
 const updateTable = (oldPosition, newPosition) => {
-    let oldCol = getColChessBoard(+oldPosition.col);
-    let newCol = getColChessBoard(+newPosition.col);
+    let oldCol = +oldPosition.col;
+    let newCol = +newPosition.col;
     let oldCell = table[oldPosition.row][oldCol];
-    table[newPosition.row][oldCol].curChess = oldCell.curChess;
-    table[oldPosition.row][newCol].curChess = getChess(oldPosition.row, oldCol, 'square');
+    table[newPosition.row][newCol].curChess = oldCell.curChess;
+    table[oldPosition.row][oldCol].curChess = getChess(oldPosition.row, oldCol, 'square');
 };
-const checkTypeMoveChess = (milestone, oldMove, newMove, typeMove) => {
+const checkTypeMoveChess = (milestone, oldMove, newMove, typeMove, team) => {
+    let cell;
     switch (typeMove) {
         case typeMoveChess.Vertical: {
-            const cell = table[oldMove][milestone];
-            if (cell.curChess.name && cell.curChess.name != 'square')
-                return true;
+            cell = table[oldMove][milestone];
             break;
         }
         case typeMoveChess.Horizontal: {
-            const cell = table[milestone][oldMove];
-            if (cell.curChess.name && cell.curChess.name != 'square')
-                return true;
+            cell = table[milestone][oldMove];
             break;
         }
         case typeMoveChess.DiagonalLine: {
-            const cell = table[milestone][oldMove];
-            console.log({ cell, milestone, oldMove, newMove });
-            if (cell.curChess.name && cell.curChess.name != 'square')
-                return true;
+            cell = table[milestone][oldMove];
         }
     }
+    console.log(cell);
+    if (cell.curChess.name && cell.curChess.name != 'square' && cell.curChess.name.includes(team))
+        return true;
     return false;
 };
-const checkBarrierOnMove = (milestone, oldMove, newMove, typeMove, options) => {
+const checkBarrierOnMove = (oldRow, newRow, oldMove, newMove, typeMove, team) => {
     if (oldMove < newMove) {
-        if (options === 'default')
-            oldMove++;
+        oldMove++;
         for (; oldMove <= newMove; oldMove++) {
-            if (checkTypeMoveChess(milestone, oldMove, newMove, typeMove))
+            if (checkTypeMoveChess(oldRow, oldMove, newMove, typeMove, team))
                 return true;
             if (typeMove == typeMoveChess.DiagonalLine)
-                milestone++;
+                oldRow < newRow ? oldRow++ : oldRow--;
         }
     }
     else {
-        if (options === 'default')
-            oldMove--;
+        oldMove--;
         for (; oldMove >= newMove; oldMove--) {
-            if (checkTypeMoveChess(milestone, oldMove, newMove, typeMove))
+            if (checkTypeMoveChess(oldRow, oldMove, newMove, typeMove, team))
                 return true;
             if (typeMove == typeMoveChess.DiagonalLine)
-                milestone--;
+                oldRow < newRow ? oldRow++ : oldRow--;
         }
     }
     return false;
@@ -127,7 +131,7 @@ const checkMove = (chess, newRow, newCol, oldRow, oldCol) => {
     const team = getChessTeam(chess);
     chess = chess.substring(5);
     const row = newRow - oldRow;
-    const col = getColChessBoard(newCol) - getColChessBoard(oldCol);
+    const col = newCol - oldCol;
     const countRow = Math.abs(row);
     const countCol = Math.abs(col);
     let result = true;
@@ -161,14 +165,15 @@ const checkMove = (chess, newRow, newCol, oldRow, oldCol) => {
         }
     }
     if (chess != 'knighton' && countRow && countCol) {
-        result && (result = !checkBarrierOnMove(oldRow + 1, getColChessBoard(oldCol), getColChessBoard(newCol), typeMoveChess.DiagonalLine, 'none'));
+        checkBarrierOnMove(row > 0 ? oldRow + 1 : oldRow - 1, newRow, oldCol, newCol, typeMoveChess.DiagonalLine, team);
+        result && (result = !checkBarrierOnMove(row > 0 ? oldRow + 1 : oldRow - 1, newRow, oldCol, newCol, typeMoveChess.DiagonalLine, team));
     }
     else if (chess != 'knighton' && countRow) {
         console.log(result);
-        result && (result = !checkBarrierOnMove(getColChessBoard(oldCol), +oldRow, +newRow, typeMoveChess.Vertical, 'default'));
+        result && (result = !checkBarrierOnMove(oldCol, 0, +oldRow, +newRow, typeMoveChess.Vertical, team));
     }
     else if (chess != 'knighton' && countCol) {
-        result && (result = !checkBarrierOnMove(oldRow, getColChessBoard(oldCol), getColChessBoard(newCol), typeMoveChess.Horizontal, 'default'));
+        result && (result = !checkBarrierOnMove(oldRow, 0, oldCol, newCol, typeMoveChess.Horizontal, team));
     }
     return result;
 };
@@ -180,7 +185,8 @@ const getColor = (row, col, chess) => {
     return chess != 'square' ? chess + color : color + chess;
 };
 const getChess = (row, col, chessUsed) => {
-    let chess = chessUsed || initChess[col] || `square`;
+    console.log({ row, col });
+    let chess = chessUsed || (initChess[row] ? initChess[row][col] : `square`) || `square`;
     return ({ img: getColor(row, col, chess), name: chess });
 };
 const setChess = (element, { row, col, nameChess }) => {
@@ -201,12 +207,13 @@ const setColorChess = (oldData, event) => {
     const newElement = event.target;
     const newData = JSON.parse(JSON.stringify(newElement.dataset));
     try {
-        console.log(newData);
-        const resultCheckMove = !checkMove(oldData.chess, Number(newData.row), Number(newData.col), Number(oldData.row), Number(oldData.col));
-        const resultAttackRival = attackRival(newData, oldData);
-        if (resultCheckMove && resultAttackRival == 'prevent')
+        const resultCheckMove = checkMove(oldData.chess, Number(newData.row), Number(newData.col), Number(oldData.row), Number(oldData.col));
+        const resultAttackRival = attackRival(newData, oldData, resultCheckMove);
+        console.log(resultAttackRival);
+        if (resultAttackRival == 'prevent')
             return;
         if (oldElement) {
+            console.log(1);
             setChess(oldElement, { row: oldData.row, col: oldData.col, nameChess: resultAttackRival });
         }
         if (newElement) {
@@ -224,14 +231,14 @@ const setColorChess = (oldData, event) => {
     let html = '';
     let i = 1;
     table = Array.from({ length: 8 }, () => Array.from({ length: 8 }, () => ({ index: i++, curChess: '' })));
-    html = table.reduce((init, row, index) => {
-        init += `<tr>${row.reduce((cell, col) => {
-            let chess = getChess(index, col.index);
-            col.curChess = chess;
-            cell += `<td class=""><img id="${chess.name}-${col.index}" data-row="${index}" data-col="${col.index}" data-chess="${chess.name}" src="./public/ChessBoard/${chess.img}.gif" dragable="true"></td>`;
+    html = table.reduce((table, row, index) => {
+        table += `<tr>${row.reduce((cell, value, col) => {
+            let chess = getChess(index, col);
+            value.curChess = chess;
+            cell += `<td class=""><img id="${chess.name}-${index}-${col}" data-row="${index}" data-col="${col}" data-chess="${chess.name}" src="./public/ChessBoard/${chess.img}.gif" dragable="true"></td>`;
             return cell;
         }, '')}</tr>`;
-        return init;
+        return table;
     }, '');
     chessBoard.innerHTML = `<table>${html}</table>`;
     chessBoard.addEventListener('drop drag dragover', (event) => {

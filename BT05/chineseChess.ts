@@ -60,7 +60,7 @@ const showMoveOnChineseBoard = (type: 'add' | 'remove', { row, col, chess }: {ro
 const attackRivalChineseChess = ({chess: newChess, row: newRow, col: newCol}: {chess: string, row: number, col: number}, {chess: oldChess, row: oldRow, col: oldCol}: {chess: string, row: number, col: number}): string => {
     const chessTeam = getChineseChessTeam({ chess: oldChess });
     const countRow = newRow - oldRow;
-    const countCol = Math.abs(getColChineseChessBoard(newCol) - getColChineseChessBoard(oldCol));
+    const countCol = Math.abs(newCol - oldCol);
     const stop = 'prevent';
     
     if (newChess.substring(0, 1) == chessTeam) return stop;
@@ -70,8 +70,8 @@ const attackRivalChineseChess = ({chess: newChess, row: newRow, col: newCol}: {c
 }
 
 const updateTableChineseChess = (oldPosition: { row: number, col: number }, newPosition: { row: number, col: number }): void => {
-    let oldCol = getColChineseChessBoard(+oldPosition.col);
-    let newCol = getColChineseChessBoard(+newPosition.col);
+    let oldCol = +oldPosition.col;
+    let newCol = +newPosition.col;
     let oldCell: any = tableChineseChess[oldPosition.row][oldCol];
     console.log((tableChineseChess[newPosition.row][newCol] as any), (tableChineseChess[oldPosition.row][oldCol] as any) , oldCol, newCol);
     (tableChineseChess[newPosition.row][newCol] as any).curChess = oldCell.curChess;
@@ -123,7 +123,7 @@ const checkBarrierOnMoveChineseChess = (milestone: number, oldMove: number, newM
 
 const checkMoveChineseChess = (chess: string, newRow: number, newCol: number, oldRow: number, oldCol: number): boolean => {
     const countRow: number = Math.abs(newRow - oldRow);
-    const countCol: number = Math.abs(getColChineseChessBoard(newCol) - getColChineseChessBoard(oldCol));
+    const countCol: number = Math.abs(newCol - oldCol);
     let result: boolean = true;
     console.log(chess);
     switch (chess) {
@@ -155,14 +155,14 @@ const checkMoveChineseChess = (chess: string, newRow: number, newCol: number, ol
         }
         case 'rmandarin':
         case 'bmandarin': {
-            const col = getColChineseChessBoard(newCol);
+            const col = newCol;
           
             result = (col > 2 && col < 6) && ((newRow > 0 && newRow < 4) || (newRow > 7 && newRow < 10)) && (countCol == 1 && countRow == 1);
             break;
         }  
         case 'rgeneral':
         case 'bgeneral': {
-            const col = getColChineseChessBoard(newCol);
+            const col = newCol;
            
             result = (col > 2 && col < 6) && (chess == 'bgeneral' ? newRow >= 0 && newRow < 3 : newRow > 6 && newRow <= 9) && ((countCol == 0 && countRow <= 3) || (countRow == 0 && countCol <= 3));
             break;
@@ -173,16 +173,16 @@ const checkMoveChineseChess = (chess: string, newRow: number, newCol: number, ol
 
     if (!checkChess && countRow && countCol) {
         console.log(oldRow + 1, getColChineseChessBoard(oldCol), getColChineseChessBoard(newCol));
-        result &&= !checkBarrierOnMoveChineseChess(oldRow, getColChineseChessBoard(oldCol), getColChineseChessBoard(newCol), typeMoveChineseChess.DiagonalLine);
+        result &&= !checkBarrierOnMoveChineseChess(oldRow,oldCol, newCol, typeMoveChineseChess.DiagonalLine);
     }
     else if (!checkChess && countRow) {
-        result &&= !checkBarrierOnMoveChineseChess(getColChineseChessBoard(oldCol), oldRow, newRow, typeMoveChineseChess.Vertical);
+        result &&= !checkBarrierOnMoveChineseChess(oldCol, oldRow, newRow, typeMoveChineseChess.Vertical);
     }
     else if (!checkChess && countCol) {
-        result &&= !checkBarrierOnMoveChineseChess(oldRow, getColChineseChessBoard(oldCol), getColChineseChessBoard(newCol), typeMoveChineseChess.Horizontal);
+        result &&= !checkBarrierOnMoveChineseChess(oldRow,oldCol, newCol, typeMoveChineseChess.Horizontal);
     }
     else if (checkChess) {
-        result &&= !checkBarrierOnMoveChineseChess(getColChineseChessBoard(oldCol), oldRow, newRow, typeMoveChineseChess.Vertical) && !checkBarrierOnMoveChineseChess(newRow, getColChineseChessBoard(oldCol) , getColChineseChessBoard(newCol), typeMoveChineseChess.Horizontal);
+        result &&= !checkBarrierOnMoveChineseChess(oldCol, oldRow, newRow, typeMoveChineseChess.Vertical) && !checkBarrierOnMoveChineseChess(newRow, oldCol , newCol, typeMoveChineseChess.Horizontal);
     }
 
     return result;
@@ -248,10 +248,10 @@ const changePositionChess = (oldData: any, event: DragEvent): void => {
     tableChineseChess = Array.from({ length: 10 }, () => Array.from({ length: 9 }, () => ({ index: i++, curChess: '' })));
 
     html = tableChineseChess.reduce((init: string, row: any, index: number) => {
-        init += `<tr>${row.reduce((cell: string, col: any) => {
-            const chess = getChessChinese(index, col.index);
-            col.curChess = chess;
-            cell += `<td><img id="${chess.name}-${col.index}" data-row="${index}" data-col="${col.index}" data-chess="${chess.name}" src="./public/ChineseChessboard/${chess.img}.jpg" dragable="true" style="display: ${chess.img ? 'initial' : 'none'}"></td>`;
+        init += `<tr>${row.reduce((cell: string, value: any, col: number) => {
+            const chess = getChessChinese(index, value.index);
+            value.curChess = chess;
+            cell += `<td><img id="${chess.name}-${value.index}" data-row="${index}" data-col="${col}" data-chess="${chess.name}" src="./public/ChineseChessboard/${chess.img}.jpg" dragable="true" style="display: ${chess.img ? 'initial' : 'none'}"></td>`;
             return cell;
         }, '')}</tr>`;
         return init;

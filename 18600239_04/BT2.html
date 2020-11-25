@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./public/css/BT2.css">
+</head>
+
+<body>
+    <div class="center">
+        <div id="chess"></div>
+    </div>
+</body>
+<script type="text/javascript">
+    let chineseChess = {
+        1: 'bchariot',
+        2: 'bhorse',
+        3: 'belephant',
+        4: 'bmandarin',
+        5: 'bgeneral',
+        6: 'bmandarin',
+        7: 'belephant',
+        8: 'bhorse',
+        9: 'bchariot',
+        20: 'bcannon',
+        26: 'bcannon',
+        28: 'bsoldier',
+        30: 'bsoldier',
+        32: 'bsoldier',
+        34: 'bsoldier',
+        36: 'bsoldier',
+        55: 'rsoldier',
+        57: 'rsoldier',
+        59: 'rsoldier',
+        61: 'rsoldier',
+        63: 'rsoldier',
+        65: 'rcannon',
+        71: 'rcannon',
+        82: 'rchariot',
+        83: 'rhorse',
+        84: 'relephant',
+        85: 'rmandarin',
+        86: 'rgeneral',
+        87: 'rmandarin',
+        88: 'relephant',
+        89: 'rhorse',
+        90: 'rchariot'
+    };
+    const getChess = (index, col) => {
+        return chineseChess[col] ? `<img src="./ChineseChessboard/${chineseChess[col]}.jpg">` : '';
+    }
+
+    (() => {
+
+        let html = '';
+        let i = 1;
+        let table = Array.from({ length: 10 }, () => Array.from({ length: 9 }, () => i++));
+
+        html = table.reduce((init, row, index) => init += `<tr>${row.reduce((cell, col) => cell += `<td>${getChess(index, col)}</td>`
+            , '')}</tr>`, '');
+        console.log(html);
+        document.getElementById('chess').innerHTML = `<div class="img-container"><img class="board" src="./ChineseChessboard/bareboard.jpg"/></div><div class="table"><table>${html}</table></div>`;
+    })()
+</script>
+
+</html>

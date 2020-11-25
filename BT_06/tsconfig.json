@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "alwaysStrict": true,
+        "strictNullChecks": true,
+        "target": "es5",
+        "sourceMap": true,
+        "outDir": "./build"   
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "html.suggest.html5": true,
+    "html.format.endWithNewline": true,
+    "html.format.enable": true,
+    "html-css-class-completion.enableEmmetSupport": true,
+    "editor.autoClosingQuotes": "always"
+}

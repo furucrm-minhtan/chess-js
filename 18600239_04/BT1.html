@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="./public/css/BT1.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="chess" class="center">
+    </div>
+</body>
+
+<script type="text/javascript">
+    let chess = {
+        1: 'blackrookonlight',
+        2: 'blackknightondark',
+        3: 'blackbishoponlight',
+        4: 'blackqueenondark',
+        5: 'blackkingonlight',
+        6: 'blackbishopondark',
+        7: 'blackknightonlight',
+        8: 'blackrookondark',
+        9: 'blackpawnondark',
+        10: 'blackpawnonlight',
+        11: 'blackpawnondark',
+        12: 'blackpawnonlight',
+        13: 'blackpawnondark',
+        14: 'blackpawnonlight',
+        15: 'blackpawnondark',
+        16: 'blackpawnonlight',
+        49: 'whitepawnonlight',
+        50: 'whitepawnondark',
+        51: 'whitepawnonlight',
+        52: 'whitepawnondark',
+        53: 'whitepawnonlight',
+        54: 'whitepawnondark',
+        55: 'whitepawnonlight',
+        56: 'whitepawnondark',
+        57: 'whiterookondark',
+        58: 'whiteknightonlight',
+        59: 'whitebishopondark',
+        60: 'whitequeenonlight',
+        61: 'whitekingondark',
+        62: 'whitebishoponlight',
+        63: 'whiteknightondark',
+        64: 'whiterookonlight'
+    };
+    const getChess = (index, col) => {
+        return chess[col] ? chess[col] : (col + index) % 2 !== 0 ? 'lightsquare' : 'darksquare';
+    }
+
+    (() => {
+
+        let html = '';
+        let i = 1;
+        let table = Array.from({ length: 8 }, () => Array.from({ length: 8 }, () => i++));
+
+        html = table.reduce((init, row, index) => init += `<tr>${row.reduce((cell, col) => cell += `<td><img src="./ChessBoard/${getChess(index, col)}.gif"></td>`
+            , '')}</tr>`, '');
+
+        document.getElementById('chess').innerHTML = `<table>${html}</table>`;
+    })()
+</script>
+
+</html>
