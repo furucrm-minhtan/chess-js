@@ -2,8 +2,9 @@
     "compilerOptions": {
         "alwaysStrict": true,
         "strictNullChecks": true,
-        "target": "es5",
+        "target": "es2016",
         "sourceMap": true,
-        "outDir": "./build"   
+        "outDir": "./build",
+        "emitBOM": true   
     }
 }

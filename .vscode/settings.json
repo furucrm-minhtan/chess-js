@@ -1,0 +1,21 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": false,
+                    "requestCert": false
+                }
+            },
+            "previewLimit": 50,
+            "server": "ec2-35-168-77-215.compute-1.amazonaws.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "BT",
+            "database": "dcvjr3e2vlenmf",
+            "username": "ukleusbgeyrorx",
+            "password": "f638500fb99ad3b2c951c61bf7c33f1179e419e1e7fd1f266fd57297685ddbb9",
+            "connectString": "postgres://ukleusbgeyrorx:f638500fb99ad3b2c951c61bf7c33f1179e419e1e7fd1f266fd57297685ddbb9@ec2-35-168-77-215.compute-1.amazonaws.com:5432/dcvjr3e2vlenmf"
+        }
+    ]
+}
