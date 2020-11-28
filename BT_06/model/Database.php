@@ -30,9 +30,14 @@ abstract class Database
     public function insert(array $fields, array $values)
     {
         try {
+            $values = $this->formatKeyInValue($values);
             $stmt = $this->DB->prepare('INSERT INTO ' . $this->formatTableWithSchema() . '(' . join(',', $fields) . ') VALUES ( ' . join(',', array_map(array($this, 'formatfields'), $fields)) . ' );');
-            $stmt->execute($values);
+            if (!$stmt) throw new Exception($this->DB->errorInfo());
+            if ($stmt->execute($values)) {
+                return true;
+            } else throw new Exception(error_reporting(E_ALL));
         } catch (Exception $ex) {
+            var_dump($ex);
             return false;
         }
         return true;
@@ -66,9 +71,12 @@ abstract class Database
     {
         try {
             $stmt = $this->DB->prepare('SELECT ' . join(',', $fields) . ' FROM ' . $this->formatTableWithSchema() . join(' ', $option));
-            $stmt->execute();
-            return $stmt->fetchAll($optionFetch);
+            if (!$stmt) throw new Exception($this->DB->errorInfo());
+            if ($stmt->execute()) {
+                return $stmt->fetchAll($optionFetch);
+            } else throw new Exception(error_reporting(E_ALL));
         } catch (Exception $ex) {
+            var_dump($ex);
             return false;
         }
     }
@@ -116,5 +124,16 @@ abstract class Database
     {
         $table =  $this->table ?? $this->getClassName();
         return $this->schema . '."' . $table . '"';
+    }
+
+    public function formatKeyInValue(array $values)
+    {
+        $newArray = array();
+        foreach ($values as $key => $value) {
+            if (!strpos($key, ':')) {
+                $newArray[':' . $key] = $value;
+            }
+        }
+        return $newArray;
     }
 }

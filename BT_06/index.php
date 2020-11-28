@@ -15,5 +15,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     } else $controller->index();
 } else if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     var_dump($_REQUEST);
-    $controller->createStudent($_REQUEST['data']);
+    $controller->createStudent($_REQUEST);
 }

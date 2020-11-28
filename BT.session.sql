@@ -9,4 +9,8 @@
 --     BirthDate DATE
 -- );
 
-SELECT Name FROM public."Students"
+SELECT Name FROM public."Students" WHERE Email = 'zemmezywuwy-2482@yopmail.com'
+
+-- DELETE FROM public."Students"
+
+-- ALTER TABLE public."Students" ADD CONSTRAINT UNIQUE_CODE UNIQUE(Code)

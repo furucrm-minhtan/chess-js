@@ -27,15 +27,13 @@ class RegistrantController
 
     public function getListHocSinh()
     {
-        return $this->students->getAll(['name', 'email'], PDO::FETCH_ASSOC, []);
+        return $this->students->getAll(['code', 'name', 'gender', "TO_CHAR(birthdate, 'DD/MM/YYYY') AS birth"], PDO::FETCH_ASSOC, []);
     }
 
     public function createStudent($request)
     {
-        $data = json_decode($request, true);
-        if ($this->students->insert(array_keys($data), $data)) {
-            $student = $this->getListHocSinh();
-            return json_encode(['message' => 'create complete', 'students' => $student]);
+        if ($this->students->insert(array_keys($request), $request)) {
+            return json_encode(['message' => 'create complete']);
         }
     }
 }
