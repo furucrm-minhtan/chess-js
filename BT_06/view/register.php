@@ -1,17 +1,18 @@
 <body>
     <div class="container">;
-        <div class="header">
-            <h1>Dang Ky hoc phan</h1>
-        </div>
-
         <div class="main-content">
             <div class="content">
+                <div class="header">
+                    <h1>Dang Ky hoc phan</h1>
+                </div>
+                <hr/>
                 <form>
                     <div class="form-input">
                         <label for="code">Ma so</label>
                         <div>
                             <input id="code" name="code" class="w-50" type="text" required="true" />
                         </div>
+                        <label for=""></label>
                         <div id="code-error" class="feedback"></div>
                     </div>
                     <div class="form-input">
@@ -19,6 +20,7 @@
                         <div>
                             <input id="name" name="name" class="w-50" type="text" required="true" />
                         </div>
+                        <label for=""></label>
                         <div id="name-error" class="feedback"></div>
                     </div>
                     <div class="form-input">
@@ -26,6 +28,7 @@
                         <div>
                             <input id="address" name="address" class="w-50" type="text" required="true" />
                         </div>
+                        <label for=""></label>
                         <div id="address-error" class="feedback"></div>
                     </div>
                     <div class="form-input">
@@ -33,6 +36,7 @@
                         <div>
                             <input id="phone" name="phone" class="w-50" type="text" required="true" />
                         </div>
+                        <label for=""></label>
                         <div id="phone-error" class="feedback"></div>
                     </div>
                     <div class="form-input">
@@ -43,6 +47,7 @@
                             <label for="nu">Nu</label>
                             <input type="radio" name="gender" id="female" value="Female" />
                         </div>
+                        <label for=""></label>
                         <div id="gender-error" class="feedback"></div>
                     </div>
                     <div class="form-input">
@@ -50,24 +55,40 @@
                         <div id="group-date" class="group-date">
                             <div>
                                 <select>
+                                    <option value="01">1</option>
+                                    <option value="02">2</option>
+                                    <option value="03">3</option>
+                                    <option value="04">4</option>
+                                    <option value="05">5</option>
+                                    <option value="06">6</option>
+                                    <option value="07">7</option>
+                                    <option value="08">8</option>
+                                    <option value="09">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
                                 </select>
                             </div>
                             <span>,</span>
                             <div>
-                                <input type="text" />
+                                <input type="text" maxlength="2"/>
                             </div>
                             <span>,</span>
                             <div>
-                                <input type="text" />
+                                <input type="text" maxlength="4"/>
                             </div>
+                            <span style="flex: 100%">(Month, DD, YYYY)</span>
                             <input class="is-hide" id="birth-date" name="birthdate" type="date" required="true" />
                         </div>
+                        <label for=""></label>
+                        <div id="birthdate-error" class="feedback"></div>
                     </div>
                     <div class="form-input">
                         <label for="email">Email</label>
                         <div>
                             <input id="email" name="email" class="w-50" type="text" required="true" />
                         </div>
+                        <label for=""></label>
                         <div id="email-error" class="feedback"></div>
                     </div>
                     <div class="form-input">
@@ -108,7 +129,8 @@
                         <button id="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
-                <div class="table">
+                <hr/>
+                <div class="table" style="margin-top: 2rem;">
                     <table class="w-75">
                         <thead>
                             <th id="code-col">Ma So</th>
@@ -126,4 +148,5 @@
     </div>
 
     <script type="text/javascript" src="./build/registrant.js"></script>
+    <script type="text/javascript" src="./build/main.js"></script>
 </body>

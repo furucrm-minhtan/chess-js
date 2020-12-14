@@ -47,4 +47,10 @@ class Utils
         array_pop($url);
         return $protocol . $_SERVER['HTTP_HOST'] . join('/', $url);
     }
+
+    public static function getPostData() {
+        $jsonString = stripslashes(file_get_contents("php://input"));
+        $jsonEncode = json_encode($jsonString);
+        return json_decode(json_decode($jsonEncode, true), true);
+    }
 }

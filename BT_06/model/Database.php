@@ -10,6 +10,8 @@ use Exception;
 use PDO;
 use Utils\Utils;
 
+use const Config\DRIVER;
+
 abstract class Database
 {
 
@@ -123,7 +125,7 @@ abstract class Database
     protected function formatTableWithSchema()
     {
         $table =  $this->table ?? $this->getClassName();
-        return $this->schema . '."' . $table . '"';
+        return DRIVER == 'pgsql' ? $this->schema . '."' . $table . '"' : $table;
     }
 
     public function formatKeyInValue(array $values)

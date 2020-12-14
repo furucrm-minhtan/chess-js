@@ -4,11 +4,12 @@ body {
 }
 
 body {
-    background-image: url('../background.jpg');
+    /* background-image: url('../background.jpg');
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-attachment: fixed;
+    background-attachment: fixed; */
+
 }
 
 * {
@@ -67,12 +68,10 @@ body {
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas:
-        "header"
         "main-content"
 }
 
 .header {
-    grid-area: header;
     text-align: center;
 }
 
@@ -141,7 +140,7 @@ body {
 .group-date {
     display: flex;
     flex-flow: row;
-    flex: 0 0 33%;
+    flex: 0 0 40%;
     align-items: flex-end;
 }
 

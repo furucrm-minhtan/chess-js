@@ -16,6 +16,32 @@
             "username": "ukleusbgeyrorx",
             "password": "f638500fb99ad3b2c951c61bf7c33f1179e419e1e7fd1f266fd57297685ddbb9",
             "connectString": "postgres://ukleusbgeyrorx:f638500fb99ad3b2c951c61bf7c33f1179e419e1e7fd1f266fd57297685ddbb9@ec2-35-168-77-215.compute-1.amazonaws.com:5432/dcvjr3e2vlenmf"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "username": "root",
+            "database": "BT06",
+            "name": "BT06",
+            "password": ""
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "BT05",
+            "database": "BT06",
+            "username": "root",
+            "password": ""
         }
     ]
 }

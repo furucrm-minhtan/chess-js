@@ -7,6 +7,7 @@
 --     Phone VARCHAR(20),
 --     Sex SEX,
 --     BirthDate DATE
+--     Subject VARCHAR(255)
 -- );
 
 SELECT Name FROM public."Students" WHERE Email = 'zemmezywuwy-2482@yopmail.com'
